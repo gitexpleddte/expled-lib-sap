@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>cl.expled</groupId>
 	<artifactId>expled-lib-sap</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<name>expled-lib-sap</name>
 	<description>consumos genericos para rfc y bapis sap</description>
 
