@@ -55,12 +55,12 @@
 	</dependencies>
 
 	<build>
-		<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<skip>true</skip>
 			        <archive>
 			            <manifestEntries>
 			                <Class-Path>BOOT-NF/classes</Class-Path>
