@@ -239,6 +239,7 @@ public class SapController {
 			}
 			JCoContext.end(destination);
 			System.out.println("reponse");
+			data = XML.toJSONObject((function.toXML().toString()));
 			//System.out.println(XML.toJSONObject(XML.escape(function.toXML().toString())));
 			r.put("data",data);
 			r.put("error",0);
