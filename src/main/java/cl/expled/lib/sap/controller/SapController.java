@@ -78,7 +78,9 @@ public class SapController {
 				r.put("message","RFC no asignado");
 				return r;
 			}
-			JCoContext.begin(destination);
+			if(json.has("COMMIT")&&json.getBoolean("COMMIT")) {
+				JCoContext.begin(destination);
+			}
 			JCoRepository repo = destination.getRepository();
 			JCoFunction function = repo.getFunction(json.getString("RFC"));
 			System.out.println(destination);
@@ -236,8 +238,9 @@ public class SapController {
 				functionC.execute(destination);
 				JSONObject ocommit = XML.toJSONObject(functionC.toXML().toString());
 				r.put("commit",ocommit);
+				JCoContext.end(destination);
 			}
-			JCoContext.end(destination);
+			
 			System.out.println("reponse");
 			data = XML.toJSONObject((function.toXML().toString()));
 			//System.out.println(XML.toJSONObject(XML.escape(function.toXML().toString())));
