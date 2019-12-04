@@ -51,6 +51,7 @@ public class SapController {
 			connectProperties.setProperty(DestinationDataProvider.JCO_USER, JCO_USER);
 			connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, JCO_PASSWD);
 			connectProperties.setProperty(DestinationDataProvider.JCO_LANG, JCO_LANG);
+			connectProperties.setProperty(DestinationDataProvider.JCO_EXPIRATION_TIME, "60000");
 			Random rand = new Random();
 			int ConnectionName = rand.nextInt(5000000);
 			destCfg = new File(ConnectionName+".jcoDestination");
