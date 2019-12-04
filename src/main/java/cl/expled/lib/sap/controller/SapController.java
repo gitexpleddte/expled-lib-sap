@@ -32,7 +32,7 @@ public class SapController {
 	private String JCO_USER;
 	private String JCO_PASSWD;
 	private String JCO_LANG;
-	JCoDestination destination;
+	public JCoDestination destination;
 	public SapController() {}
 	public SapController setJCO_ASHOST(String s) {JCO_ASHOST=s;return this;}
 	public SapController setJCO_SYSNR(String s) {JCO_SYSNR=s;return this;}
