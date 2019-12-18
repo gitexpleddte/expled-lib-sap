@@ -82,6 +82,19 @@ public class SapController {
 		return destination.isValid();
 	}
 	
+	public boolean connect(String CONNECION_ID)
+	{
+		try {
+			Random rand = new Random();
+			CONNECION_ID = rand.nextInt(5000000)+"";
+			destination = JCoDestinationManager.getDestination(CONNECION_ID);
+		}catch (Exception ex) {
+			System.out.println(ex);
+			throw new RuntimeException(ex.getMessage());
+		}
+		return destination.isValid();
+	}
+	
 	public JSONObject callRfc(JSONObject json) {	
 		JSONObject r = new JSONObject();
 		JSONObject data= new JSONObject();
