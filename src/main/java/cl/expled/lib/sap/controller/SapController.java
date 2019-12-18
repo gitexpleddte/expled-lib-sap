@@ -32,6 +32,7 @@ public class SapController {
 	private String JCO_USER;
 	private String JCO_PASSWD;
 	private String JCO_LANG;
+	public String CONNECION_ID;
 	public JCoDestination destination;
 	public SapController() {}
 	public SapController setJCO_ASHOST(String s) {JCO_ASHOST=s;return this;}
@@ -42,8 +43,8 @@ public class SapController {
 	public SapController setJCO_LANG(String s) {JCO_LANG=s;return this;}
 	public boolean connect()
 	{
-		File destCfg;
 		try {
+			SapDestination provider = new SapDestination();
 			Properties connectProperties = new Properties();
 			connectProperties.setProperty(DestinationDataProvider.JCO_ASHOST, JCO_ASHOST);
 			connectProperties.setProperty(DestinationDataProvider.JCO_SYSNR, JCO_SYSNR);
@@ -52,17 +53,28 @@ public class SapController {
 			connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, JCO_PASSWD);
 			connectProperties.setProperty(DestinationDataProvider.JCO_LANG, JCO_LANG);
 			connectProperties.setProperty(DestinationDataProvider.JCO_EXPIRATION_TIME, "60000");
+			
 			Random rand = new Random();
-			int ConnectionName = rand.nextInt(5000000);
-			destCfg = new File(ConnectionName+".jcoDestination");
-			FileOutputStream fos = new FileOutputStream(destCfg, false);
-			connectProperties.store(fos, "for tests only !");
-			fos.close();
-			System.out.println(destCfg.getAbsolutePath());
-			destination = JCoDestinationManager.getDestination(ConnectionName+"");
-			destCfg.delete();
-		}catch (IOException ex) {
-			throw new RuntimeException("Unable to create the  destination files: "+ex.getMessage(), ex);
+			CONNECION_ID = rand.nextInt(5000000)+"";
+			provider.addDestination(CONNECION_ID, connectProperties);
+			com.sap.conn.jco.ext.Environment.registerDestinationDataProvider( provider );
+			destination = JCoDestinationManager.getDestination(CONNECION_ID);
+		}catch (Exception ex) {
+			System.out.println(ex);
+			throw new RuntimeException(ex.getMessage());
+		}
+		return destination.isValid();
+	}
+	
+	public boolean connect(Properties connectProperties)
+	{
+		try {
+			SapDestination provider = new SapDestination();
+			Random rand = new Random();
+			CONNECION_ID = rand.nextInt(5000000)+"";
+			provider.addDestination(CONNECION_ID, connectProperties);
+			com.sap.conn.jco.ext.Environment.registerDestinationDataProvider( provider );
+			destination = JCoDestinationManager.getDestination(CONNECION_ID);
 		}catch (Exception ex) {
 			System.out.println(ex);
 			throw new RuntimeException(ex.getMessage());
