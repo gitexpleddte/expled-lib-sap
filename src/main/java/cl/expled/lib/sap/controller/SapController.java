@@ -73,8 +73,14 @@ public class SapController {
 			Random rand = new Random();
 			CONNECION_ID = rand.nextInt(5000000)+"";
 			provider.addDestination(CONNECION_ID, connectProperties);
-			com.sap.conn.jco.ext.Environment.registerDestinationDataProvider( provider );
+			if(com.sap.conn.jco.ext.Environment.isDestinationDataProviderRegistered()) {
+				
+			}else {
+				com.sap.conn.jco.ext.Environment.registerDestinationDataProvider( provider );
+			}
+			
 			destination = JCoDestinationManager.getDestination(CONNECION_ID);
+			
 		}catch (Exception ex) {
 			System.out.println(ex);
 			throw new RuntimeException(ex.getMessage());
@@ -85,8 +91,7 @@ public class SapController {
 	public boolean connect(String CONNECION_ID)
 	{
 		try {
-			Random rand = new Random();
-			CONNECION_ID = rand.nextInt(5000000)+"";
+			this.CONNECION_ID=CONNECION_ID;
 			destination = JCoDestinationManager.getDestination(CONNECION_ID);
 		}catch (Exception ex) {
 			System.out.println(ex);
