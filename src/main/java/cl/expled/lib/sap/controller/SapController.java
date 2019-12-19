@@ -41,6 +41,7 @@ public class SapController {
 	public SapController setJCO_USER(String s) {JCO_USER=s;return this;}
 	public SapController setJCO_PASSWD(String s) {JCO_PASSWD=s;return this;}
 	public SapController setJCO_LANG(String s) {JCO_LANG=s;return this;}
+	public SapController setCONNECION_ID(String s) {CONNECION_ID=s;return this;}
 	public boolean connect()
 	{
 		try {
@@ -55,7 +56,7 @@ public class SapController {
 			connectProperties.setProperty(DestinationDataProvider.JCO_EXPIRATION_TIME, "60000");
 			
 			Random rand = new Random();
-			CONNECION_ID = rand.nextInt(5000000)+"";
+			if(CONNECION_ID==null)CONNECION_ID = rand.nextInt(5000000)+"";
 			provider.addDestinationByName(CONNECION_ID, connectProperties);
 			
 			if(!com.sap.conn.jco.ext.Environment.isDestinationDataProviderRegistered()) {
@@ -69,12 +70,20 @@ public class SapController {
 		return destination.isValid();
 	}
 	
+	public boolean resetDestinationDataProvider() {
+		SapDestinationProvider provider = SapDestinationProvider.getInstance();
+		if(com.sap.conn.jco.ext.Environment.isDestinationDataProviderRegistered()) {
+			com.sap.conn.jco.ext.Environment.unregisterDestinationDataProvider(provider);
+		}
+		return true;
+	}
+	
 	public boolean connect(Properties connectProperties)
 	{
 		try {
 			SapDestinationProvider provider = SapDestinationProvider.getInstance();
 			Random rand = new Random();
-			CONNECION_ID = rand.nextInt(5000000)+"";
+			if(CONNECION_ID==null)CONNECION_ID = rand.nextInt(5000000)+"";
 			provider.addDestinationByName(CONNECION_ID, connectProperties);
 			if(!com.sap.conn.jco.ext.Environment.isDestinationDataProviderRegistered()) {
 				com.sap.conn.jco.ext.Environment.registerDestinationDataProvider( provider );
