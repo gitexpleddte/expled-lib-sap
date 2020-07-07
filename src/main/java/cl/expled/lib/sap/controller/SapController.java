@@ -1,11 +1,8 @@
 package cl.expled.lib.sap.controller;
 /*solo puede ser usado con la configuracion sapjco en el servidor*/
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Properties;
 import java.util.Random;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
@@ -32,7 +29,7 @@ public class SapController {
 	private String JCO_USER;
 	private String JCO_PASSWD;
 	private String JCO_LANG;
-	public String CONNECION_ID;
+	public String CONNECION_ID="SCO";
 	public JCoDestination destination;
 	public SapController() {}
 	public SapController setJCO_ASHOST(String s) {JCO_ASHOST=s;return this;}
@@ -54,10 +51,12 @@ public class SapController {
 			connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, JCO_PASSWD);
 			connectProperties.setProperty(DestinationDataProvider.JCO_LANG, JCO_LANG);
 			connectProperties.setProperty(DestinationDataProvider.JCO_EXPIRATION_TIME, "60000");
+			connectProperties.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "0");
 			
-			Random rand = new Random();
-			if(CONNECION_ID==null)CONNECION_ID = rand.nextInt(5000000)+"";
+			//Random rand = new Random();
+			//if(CONNECION_ID==null)CONNECION_ID = this.CONNECION_ID;
 			provider.addDestinationByName(CONNECION_ID, connectProperties);
+			
 			
 			if(!com.sap.conn.jco.ext.Environment.isDestinationDataProviderRegistered()) {
 				com.sap.conn.jco.ext.Environment.registerDestinationDataProvider( provider );
@@ -82,8 +81,8 @@ public class SapController {
 	{
 		try {
 			SapDestinationProvider provider = SapDestinationProvider.getInstance();
-			Random rand = new Random();
-			if(CONNECION_ID==null)CONNECION_ID = rand.nextInt(5000000)+"";
+			//Random rand = new Random();
+			//if(CONNECION_ID==null)CONNECION_ID = "";
 			provider.addDestinationByName(CONNECION_ID, connectProperties);
 			if(!com.sap.conn.jco.ext.Environment.isDestinationDataProviderRegistered()) {
 				com.sap.conn.jco.ext.Environment.registerDestinationDataProvider( provider );

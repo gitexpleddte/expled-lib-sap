@@ -42,6 +42,28 @@ public class SapDestinationProvider implements DestinationDataProvider{
 			return true;
 		}
 	}
+	
+	public Boolean addDestinationByName(String destName, Properties destProperties,boolean replaceIfExist) {
+
+		if (!replaceIfExist && destinationMap.containsKey(destName)) {
+			LOG.log(Level.WARNING, "Unable to load destination " + destName + ", already loaded.");
+			return false;
+		}else if (replaceIfExist && destinationMap.containsKey(destName)) {
+			destinationMap.put(destName, destProperties);
+			LOG.log(Level.INFO, "Destination " + destName + " properties updated.");
+			return true;
+		} else {
+			destinationMap.put(destName, destProperties);
+			LOG.log(Level.INFO, "Destination " + destName + " properties added.");
+			return true;
+		}
+	}
+	
+	public void removeDestination(final String destinationName) {
+		if(destinationMap.containsKey(destinationName)) {
+	        destinationMap.remove(destinationName);
+		}
+    }
 
 	public Map<String, Properties> getDestinations() {
 		return destinationMap;

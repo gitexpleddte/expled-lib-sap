@@ -29,3 +29,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#jco
+dev_jco_rfc.trc
+
+
+mvnw
+mvnw.cmd
