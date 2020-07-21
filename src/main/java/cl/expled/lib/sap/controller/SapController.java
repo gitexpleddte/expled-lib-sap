@@ -78,7 +78,7 @@ public class SapController {
 	public boolean connect(String DestinationFolder,String ConnectionName) throws JCoException
 	{
 		//JCoDestination destination;
-		DestinationFolder=DestinationFolder!=null?DestinationFolder:"/";
+		DestinationFolder=DestinationFolder!=null?DestinationFolder:"";
 		Random rand = new Random(); 
 		int randConnectionName = rand.nextInt(99999); 
 		ConnectionName = ConnectionName!=null?ConnectionName:randConnectionName+"";
@@ -94,7 +94,7 @@ public class SapController {
 			connectProperties.setProperty(DestinationDataProvider.JCO_EXPIRATION_TIME, "60000");
 			connectProperties.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "0");
 			
-			destCfg = new File(DestinationFolder+ConnectionName+".jcoDestination");
+			destCfg = new File(DestinationFolder+"/"+ConnectionName+".jcoDestination");
 			
 			FileOutputStream fos = new FileOutputStream(destCfg, false);
 			connectProperties.store(fos, "");
@@ -104,7 +104,7 @@ public class SapController {
 		}catch (Exception ex) {
 			throw new RuntimeException(ex.getMessage());
 		}
-		destination = JCoDestinationManager.getDestination(ConnectionName);
+		destination = JCoDestinationManager.getDestination(DestinationFolder+"/"+ConnectionName);
 		destCfg.delete();
 		return destination.isValid();
 	}
