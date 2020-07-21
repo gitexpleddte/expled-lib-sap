@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.sap.conn.jco.JCoException;
 import com.sap.conn.jco.ext.DestinationDataProvider;
 
 import cl.expled.lib.sap.controller.SapController;
@@ -15,7 +16,7 @@ import cl.expled.lib.sap.controller.SapController;
 @SpringBootTest
 class ExpledLibSapApplicationTests {
 	@Test
-	void contextLoads0() throws IOException {
+	void contextLoads0() throws IOException, JCoException {
 		Properties connectProperties = new Properties();
 		/*#sap qas
 		movilidad.sap.JCO_ASHOST = /H/200.54.27.10/H/10.60.1.22
@@ -35,7 +36,7 @@ class ExpledLibSapApplicationTests {
 		System.out.println("SapController");
 		SapController sap = new SapController();
 		sap.setCONNECION_ID("MOVILIDAD2");
-		sap.connect(connectProperties);
+		sap.connect("",null,connectProperties);
 		String sJson ="{\"RFC\": \"ZMOV_10002\",\"getBase\":true}";
 		JSONObject json = new JSONObject(sJson);
 		System.out.println(sap.callRfc(json));

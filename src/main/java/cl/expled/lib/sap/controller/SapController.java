@@ -1,6 +1,9 @@
 package cl.expled.lib.sap.controller;
 /*solo puede ser usado con la configuracion sapjco en el servidor*/
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 import java.util.Random;
 import java.io.InputStream;
@@ -15,6 +18,7 @@ import org.json.XML;
 import com.sap.conn.jco.JCoContext;
 import com.sap.conn.jco.JCoDestination;
 import com.sap.conn.jco.JCoDestinationManager;
+import com.sap.conn.jco.JCoException;
 import com.sap.conn.jco.JCoField;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
@@ -22,6 +26,7 @@ import com.sap.conn.jco.JCoRepository;
 import com.sap.conn.jco.JCoStructure;
 import com.sap.conn.jco.JCoTable;
 import com.sap.conn.jco.ext.DestinationDataProvider;
+
 public class SapController {
 	private String JCO_ASHOST;
 	private String JCO_SYSNR;
@@ -68,6 +73,76 @@ public class SapController {
 		}
 		return destination.isValid();
 	}
+	
+	
+	public boolean connect(String DestinationFolder,String ConnectionName) throws JCoException
+	{
+		//JCoDestination destination;
+		DestinationFolder=DestinationFolder!=null?DestinationFolder:"/";
+		Random rand = new Random(); 
+		int randConnectionName = rand.nextInt(99999); 
+		ConnectionName = ConnectionName!=null?ConnectionName:randConnectionName+"";
+		File destCfg;
+		try {
+			Properties connectProperties = new Properties();
+			connectProperties.setProperty(DestinationDataProvider.JCO_ASHOST, JCO_ASHOST);
+			connectProperties.setProperty(DestinationDataProvider.JCO_SYSNR, JCO_SYSNR);
+			connectProperties.setProperty(DestinationDataProvider.JCO_CLIENT, JCO_CLIENT);
+			connectProperties.setProperty(DestinationDataProvider.JCO_USER, JCO_USER);
+			connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, JCO_PASSWD);
+			connectProperties.setProperty(DestinationDataProvider.JCO_LANG, JCO_LANG);
+			connectProperties.setProperty(DestinationDataProvider.JCO_EXPIRATION_TIME, "60000");
+			connectProperties.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "0");
+			
+			destCfg = new File(DestinationFolder+ConnectionName+".jcoDestination");
+			
+			FileOutputStream fos = new FileOutputStream(destCfg, false);
+			connectProperties.store(fos, "");
+			fos.close();
+		}catch (IOException ex) {
+			throw new RuntimeException("Unable to create the  destination files: "+ex.getMessage(), ex);
+		}catch (Exception ex) {
+			throw new RuntimeException(ex.getMessage());
+		}
+		destination = JCoDestinationManager.getDestination(ConnectionName);
+		destCfg.delete();
+		return destination.isValid();
+	}
+	
+	public boolean connect(String DestinationFolder,String ConnectionName, Properties connectProperties) throws JCoException
+	{
+		//JCoDestination destination;
+		DestinationFolder=DestinationFolder!=null?DestinationFolder:"/";
+		Random rand = new Random(); 
+		int randConnectionName = rand.nextInt(99999); 
+		ConnectionName = ConnectionName!=null?ConnectionName:randConnectionName+"";
+		File destCfg;
+		try {
+			/*Properties connectProperties = new Properties();
+			connectProperties.setProperty(DestinationDataProvider.JCO_ASHOST, JCO_ASHOST);
+			connectProperties.setProperty(DestinationDataProvider.JCO_SYSNR, JCO_SYSNR);
+			connectProperties.setProperty(DestinationDataProvider.JCO_CLIENT, JCO_CLIENT);
+			connectProperties.setProperty(DestinationDataProvider.JCO_USER, JCO_USER);
+			connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, JCO_PASSWD);
+			connectProperties.setProperty(DestinationDataProvider.JCO_LANG, JCO_LANG);
+			connectProperties.setProperty(DestinationDataProvider.JCO_EXPIRATION_TIME, "60000");
+			connectProperties.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "0");
+			*/
+			destCfg = new File(DestinationFolder+ConnectionName+".jcoDestination");
+			
+			FileOutputStream fos = new FileOutputStream(destCfg, false);
+			connectProperties.store(fos, "");
+			fos.close();
+		}catch (IOException ex) {
+			throw new RuntimeException("Unable to create the  destination files: "+ex.getMessage(), ex);
+		}catch (Exception ex) {
+			throw new RuntimeException(ex.getMessage());
+		}
+		destination = JCoDestinationManager.getDestination(ConnectionName);
+		destCfg.delete();
+		return destination.isValid();
+	}
+	
 	
 	public boolean resetDestinationDataProvider() {
 		SapDestinationProvider provider = SapDestinationProvider.getInstance();
