@@ -1,0 +1,10 @@
+#
+#Thu Jul 30 14:45:09 CLT 2020
+jco.client.lang=ES
+jco.client.client=400
+jco.client.passwd=Inicio01
+jco.destination.expiration_time=60000
+jco.client.user=MOVILIDAD2
+jco.client.sysnr=00
+jco.destination.pool_capacity=0
+jco.client.ashost=/H/200.54.27.10/H/10.60.1.22

@@ -112,7 +112,7 @@ public class SapController {
 	public boolean connect(String DestinationFolder,String ConnectionName, Properties connectProperties) throws JCoException
 	{
 		//JCoDestination destination;
-		DestinationFolder=DestinationFolder!=null?DestinationFolder:"/";
+		DestinationFolder=DestinationFolder!=null?DestinationFolder:"";
 		Random rand = new Random(); 
 		int randConnectionName = rand.nextInt(99999); 
 		ConnectionName = ConnectionName!=null?ConnectionName:randConnectionName+"";
@@ -138,7 +138,7 @@ public class SapController {
 		}catch (Exception ex) {
 			throw new RuntimeException(ex.getMessage());
 		}
-		destination = JCoDestinationManager.getDestination(ConnectionName);
+		destination = JCoDestinationManager.getDestination(DestinationFolder+"/"+ConnectionName);
 		destCfg.delete();
 		return destination.isValid();
 	}
