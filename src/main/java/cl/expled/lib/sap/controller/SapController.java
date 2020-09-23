@@ -75,6 +75,13 @@ public class SapController {
 	}
 	
 	
+	/**
+	Conectar por medio de un archivio jcoDestination en carpeta tomcat por defecto
+	@param DestinationFolder	ubicacion fisica del archivo
+	@param ConnectionName	nombre del archivo .jcoDestination
+	@return boolean	destination.isValid()
+	@throws JCoException
+	*/
 	public boolean connect(String DestinationFolder,String ConnectionName) throws JCoException
 	{
 		//JCoDestination destination;
@@ -95,6 +102,82 @@ public class SapController {
 			connectProperties.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "0");
 			
 			destCfg = new File(DestinationFolder+"/"+ConnectionName+".jcoDestination");
+			FileOutputStream fos = new FileOutputStream(destCfg, false);
+			connectProperties.store(fos, "");
+			fos.close();
+		}catch (IOException ex) {
+			throw new RuntimeException("Unable to create the  destination files: "+ex.getMessage(), ex);
+		}catch (Exception ex) {
+			throw new RuntimeException(ex.getMessage());
+		}
+		destination = JCoDestinationManager.getDestination(DestinationFolder+"/"+ConnectionName);
+		destCfg.delete();
+		return destination.isValid();
+	}
+	
+	/**
+	Conectar por medio de un archivio jcoDestination en carpeta tomcat por defecto
+	@param DestinationFolder	ubicacion fisica del archivo
+	@param ConnectionName	nombre del archivo .jcoDestination
+	@param DeleteDestinationfile	verdadero = eliminar archivo .jcoDestination, falso = no eliminar archivo .jcoDestination
+	@param ReplaceFile	vardadero = reemplaza el archivo .jcoDestination, falso no reemplazar
+	@return boolean destination.isValid()
+	@throws JCoException
+	*/
+	public boolean connect(
+			String DestinationFolder,
+			String ConnectionName,
+			boolean DeleteDestinationFile,
+			boolean ReplaceDestinationFile)
+		throws JCoException
+	{
+		//JCoDestination destination;
+		DestinationFolder=DestinationFolder!=null?DestinationFolder:"";
+		Random rand = new Random(); 
+		int randConnectionName = rand.nextInt(99999); 
+		ConnectionName = ConnectionName!=null?ConnectionName:randConnectionName+"";
+		File destCfg = new File("");
+		try {
+			if(ReplaceDestinationFile) {
+				Properties connectProperties = new Properties();
+				connectProperties.setProperty(DestinationDataProvider.JCO_ASHOST, JCO_ASHOST);
+				connectProperties.setProperty(DestinationDataProvider.JCO_SYSNR, JCO_SYSNR);
+				connectProperties.setProperty(DestinationDataProvider.JCO_CLIENT, JCO_CLIENT);
+				connectProperties.setProperty(DestinationDataProvider.JCO_USER, JCO_USER);
+				connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, JCO_PASSWD);
+				connectProperties.setProperty(DestinationDataProvider.JCO_LANG, JCO_LANG);
+				connectProperties.setProperty(DestinationDataProvider.JCO_EXPIRATION_TIME, "60000");
+				connectProperties.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "0");
+				
+				destCfg = new File(DestinationFolder+"/"+ConnectionName+".jcoDestination");
+				
+				FileOutputStream fos = new FileOutputStream(destCfg, false);
+				connectProperties.store(fos, "");
+				fos.close();
+				
+			}
+		}catch (IOException ex) {
+			throw new RuntimeException("Unable to create the  destination files: "+ex.getMessage(), ex);
+		}catch (Exception ex) {
+			throw new RuntimeException(ex.getMessage());
+		}
+		destination = JCoDestinationManager.getDestination(DestinationFolder+"/"+ConnectionName);
+		if(DeleteDestinationFile && destCfg!=null) {
+			destCfg.delete();
+		}
+		return destination.isValid();
+	}
+	
+	public boolean connect(String DestinationFolder,String ConnectionName, Properties connectProperties) throws JCoException
+	{
+		//JCoDestination destination;
+		DestinationFolder=DestinationFolder!=null?DestinationFolder:"";
+		Random rand = new Random(); 
+		int randConnectionName = rand.nextInt(99999); 
+		ConnectionName = ConnectionName!=null?ConnectionName:randConnectionName+"";
+		File destCfg;
+		try {
+			destCfg = new File(DestinationFolder+"/"+ConnectionName+".jcoDestination");
 			
 			FileOutputStream fos = new FileOutputStream(destCfg, false);
 			connectProperties.store(fos, "");
@@ -109,37 +192,46 @@ public class SapController {
 		return destination.isValid();
 	}
 	
-	public boolean connect(String DestinationFolder,String ConnectionName, Properties connectProperties) throws JCoException
+	/**
+	Conectar por medio de un archivio jcoDestination en carpeta tomcat por defecto
+	@param DestinationFolder	ubicacion fisica del archivo
+	@param ConnectionName	nombre del archivo .jcoDestination
+	@param connectProperties	propiedades del archivo .jcoDestination
+	@param DeleteDestinationFile	verdadero = eliminar archivo .jcoDestination, falso = no eliminar archivo .jcoDestination
+	@param ReplaceDestinationFile	vardadero = reemplaza el archivo .jcoDestination, falso no reemplazar
+	@return boolean destination.isValid()
+	@throws JCoException
+	*/
+	public boolean connect(
+			String DestinationFolder,
+			String ConnectionName, 
+			Properties connectProperties,
+			boolean DeleteDestinationFile,
+			boolean ReplaceDestinationFile
+		) throws JCoException
 	{
 		//JCoDestination destination;
 		DestinationFolder=DestinationFolder!=null?DestinationFolder:"";
 		Random rand = new Random(); 
 		int randConnectionName = rand.nextInt(99999); 
 		ConnectionName = ConnectionName!=null?ConnectionName:randConnectionName+"";
-		File destCfg;
+		File destCfg = new File("");
 		try {
-			/*Properties connectProperties = new Properties();
-			connectProperties.setProperty(DestinationDataProvider.JCO_ASHOST, JCO_ASHOST);
-			connectProperties.setProperty(DestinationDataProvider.JCO_SYSNR, JCO_SYSNR);
-			connectProperties.setProperty(DestinationDataProvider.JCO_CLIENT, JCO_CLIENT);
-			connectProperties.setProperty(DestinationDataProvider.JCO_USER, JCO_USER);
-			connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, JCO_PASSWD);
-			connectProperties.setProperty(DestinationDataProvider.JCO_LANG, JCO_LANG);
-			connectProperties.setProperty(DestinationDataProvider.JCO_EXPIRATION_TIME, "60000");
-			connectProperties.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "0");
-			*/
-			destCfg = new File(DestinationFolder+ConnectionName+".jcoDestination");
-			
-			FileOutputStream fos = new FileOutputStream(destCfg, false);
-			connectProperties.store(fos, "");
-			fos.close();
+			if(ReplaceDestinationFile) {
+				destCfg = new File(DestinationFolder+"/"+ConnectionName+".jcoDestination");
+				FileOutputStream fos = new FileOutputStream(destCfg, false);
+				connectProperties.store(fos, "");
+				fos.close();
+			}
+			destination = JCoDestinationManager.getDestination(DestinationFolder+"/"+ConnectionName);
+			if(DeleteDestinationFile && destCfg!=null) {
+				destCfg.delete();
+			}
 		}catch (IOException ex) {
 			throw new RuntimeException("Unable to create the  destination files: "+ex.getMessage(), ex);
 		}catch (Exception ex) {
 			throw new RuntimeException(ex.getMessage());
 		}
-		destination = JCoDestinationManager.getDestination(DestinationFolder+"/"+ConnectionName);
-		destCfg.delete();
 		return destination.isValid();
 	}
 	
@@ -202,7 +294,7 @@ public class SapController {
 			}
 			JCoRepository repo = destination.getRepository();
 			JCoFunction function = repo.getFunction(json.getString("RFC"));
-			System.out.println(destination);
+			//System.out.println(destination);
 			//System.out.println(function.toXML().toString());
 			if(json.has("getBase") && json.getBoolean("getBase")) {
 				data = XML.toJSONObject(function.toXML().toString());
@@ -269,8 +361,8 @@ public class SapController {
 							tableObject.put(tableName, "");
 						}
 						
-						System.out.println("");
-						System.out.println(obj.getName());
+						//System.out.println("");
+						//System.out.println(obj.getName());
 					}
 					r.put("TABLES",tableObject);
 				}
@@ -351,7 +443,6 @@ public class SapController {
 			function.execute(destination);
 			if(json.has("COMMIT")&&json.getBoolean("COMMIT")) {
 				System.out.println("commit");
-				
 				JCoFunction functionC = repo. getFunction("BAPI_TRANSACTION_COMMIT");
 				functionC.getImportParameterList().setValue("WAIT", "X");
 				functionC.execute(destination);

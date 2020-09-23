@@ -1,5 +1,6 @@
 package cl.expled.lib.sap;
 
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Properties;
@@ -29,17 +30,21 @@ class ExpledLibSapApplicationTests {
 		connectProperties.setProperty(DestinationDataProvider.JCO_SYSNR, "00");
 		connectProperties.setProperty(DestinationDataProvider.JCO_CLIENT, "400");
 		connectProperties.setProperty(DestinationDataProvider.JCO_USER, "MOVILIDAD2");
-		connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, "Inicio01");
+		connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, "Inicio02");
 		connectProperties.setProperty(DestinationDataProvider.JCO_LANG, "ES");
 		connectProperties.setProperty(DestinationDataProvider.JCO_EXPIRATION_TIME, "60000");
 		connectProperties.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "0");
 		System.out.println("SapController");
 		SapController sap = new SapController();
-		sap.setCONNECION_ID("MOVILIDAD2");
-		sap.connect("",null,connectProperties);
-		String sJson ="{\"RFC\": \"ZMOV_10002\",\"getBase\":true}";
-		JSONObject json = new JSONObject(sJson);
+		//sap.setCONNECION_ID("MOVILIDAD2");
+		try{
+			sap.connect("dest","MOVILIDAD2",connectProperties,false,false);
+			String sJson ="{\"RFC\": \"ZMOV_10002\",\"getBase\":true}";
+			JSONObject json = new JSONObject(sJson);
 		System.out.println(sap.callRfc(json));
+		}catch (JCoException ex) {
+			throw new RuntimeException(ex.getMessage());
+		}
 	}
 	//@Test
 	void contextLoads() throws IOException {
