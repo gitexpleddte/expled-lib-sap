@@ -394,7 +394,27 @@ public class SapController {
 				    		inputTable.appendRow();
 				    		while(iobj.hasNext()) {
 						    	String itemKey = iobj.next();
-						    	inputTable.setValue(itemKey, objArr.get(itemKey)+"");
+						    	
+						    	//*Array dentro de arrays*//
+						    	if(objArr.get(itemKey) instanceof JSONArray) {
+							    	JCoTable inputTableNested = inputTable.getTable(itemKey);
+							    	JSONArray arrNested = objArr.getJSONArray(itemKey);
+							    	Iterator<Object> iArrNested= arrNested.iterator();
+							    	while(iArrNested.hasNext()) {
+							    		JSONObject objArrNested = (JSONObject)iArrNested.next();
+							    		Iterator<String> iobjNested= objArrNested.keys();
+							    		inputTableNested.appendRow();
+							    		while(iobjNested.hasNext()) {
+									    	String itemKeyNested = iobjNested.next();
+									    	inputTableNested.setValue(itemKeyNested, objArrNested.get(itemKeyNested)+"");
+									    }
+							    	}
+							    	inputTable.setValue(itemKey, inputTableNested);
+							    }else {
+							    	inputTable.setValue(itemKey, objArr.get(itemKey)+"");
+							    }
+						    	//inputTable.setValue(itemKey, objArr.get(itemKey)+"");
+						    	
 						    }
 				    	}
 				    	function.getImportParameterList().setValue(key, inputTable);
@@ -429,7 +449,25 @@ public class SapController {
 				    		inputTable.appendRow();
 				    		while(iobj.hasNext()) {
 						    	String itemKey = iobj.next();
-						    	inputTable.setValue(itemKey, objArr.get(itemKey)+"");
+						    	//*Array dentro de arrays*//
+						    	if(objArr.get(itemKey) instanceof JSONArray) {
+							    	JCoTable inputTableNested = inputTable.getTable(itemKey);
+							    	JSONArray arrNested = objArr.getJSONArray(itemKey);
+							    	Iterator<Object> iArrNested= arrNested.iterator();
+							    	while(iArrNested.hasNext()) {
+							    		JSONObject objArrNested = (JSONObject)iArrNested.next();
+							    		Iterator<String> iobjNested= objArrNested.keys();
+							    		inputTableNested.appendRow();
+							    		while(iobjNested.hasNext()) {
+									    	String itemKeyNested = iobjNested.next();
+									    	inputTableNested.setValue(itemKeyNested, objArrNested.get(itemKeyNested)+"");
+									    }
+							    	}
+							    	inputTable.setValue(itemKey, inputTableNested);
+							    }else {
+							    	inputTable.setValue(itemKey, objArr.get(itemKey)+"");
+							    }
+						    	//inputTable.setValue(itemKey, objArr.get(itemKey)+"");
 						    }
 				    	}
 				    	function.getTableParameterList().setValue(key, inputTable);
