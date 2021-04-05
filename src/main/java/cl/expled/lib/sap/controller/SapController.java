@@ -107,7 +107,9 @@ public class SapController {
 			connectProperties.store(fos, "");
 			fos.close();
 		}catch (IOException ex) {
+			ex.printStackTrace();
 			throw new RuntimeException("Unable to create the  destination files: "+ex.getMessage(), ex);
+			
 		}catch (Exception ex) {
 			throw new RuntimeException(ex.getMessage());
 		}
@@ -158,6 +160,7 @@ public class SapController {
 				
 			}
 		}catch (IOException ex) {
+			ex.printStackTrace();
 			throw new RuntimeException("Unable to create the  destination files: "+ex.getMessage(), ex);
 		}catch (Exception ex) {
 			throw new RuntimeException(ex.getMessage());
@@ -184,6 +187,7 @@ public class SapController {
 			connectProperties.store(fos, "");
 			fos.close();
 		}catch (IOException ex) {
+			ex.printStackTrace();
 			throw new RuntimeException("Unable to create the  destination files: "+ex.getMessage(), ex);
 		}catch (Exception ex) {
 			throw new RuntimeException(ex.getMessage());
@@ -230,6 +234,7 @@ public class SapController {
 				destCfg.delete();
 			}
 		}catch (IOException ex) {
+			ex.printStackTrace();
 			throw new RuntimeException("Unable to create the  destination files: "+ex.getMessage(), ex);
 		}catch (Exception ex) {
 			throw new RuntimeException(ex.getMessage());
@@ -260,6 +265,7 @@ public class SapController {
 			
 		}catch (Exception ex) {
 			System.out.println(ex);
+			ex.printStackTrace();
 			throw new RuntimeException(ex.getMessage());
 		}
 		return destination.isValid();
@@ -277,6 +283,7 @@ public class SapController {
 			destination = JCoDestinationManager.getDestination(CONNECION_ID);
 		}catch (Exception ex) {
 			System.out.println(ex);
+			ex.printStackTrace();
 			throw new RuntimeException(ex.getMessage());
 		}
 		return destination.isValid();
