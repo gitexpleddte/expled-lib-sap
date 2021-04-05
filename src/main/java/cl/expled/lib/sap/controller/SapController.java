@@ -102,6 +102,7 @@ public class SapController {
 			connectProperties.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "0");
 			
 			destCfg = new File(DestinationFolder+"/"+ConnectionName+".jcoDestination");
+			System.out.println(destCfg.getAbsolutePath());
 			FileOutputStream fos = new FileOutputStream(destCfg, false);
 			connectProperties.store(fos, "");
 			fos.close();
@@ -150,7 +151,7 @@ public class SapController {
 				connectProperties.setProperty(DestinationDataProvider.JCO_POOL_CAPACITY, "0");
 				
 				destCfg = new File(DestinationFolder+"/"+ConnectionName+".jcoDestination");
-				
+				System.out.println(destCfg.getAbsolutePath());
 				FileOutputStream fos = new FileOutputStream(destCfg, false);
 				connectProperties.store(fos, "");
 				fos.close();
@@ -178,7 +179,7 @@ public class SapController {
 		File destCfg;
 		try {
 			destCfg = new File(DestinationFolder+"/"+ConnectionName+".jcoDestination");
-			
+			System.out.println(destCfg.getAbsolutePath());
 			FileOutputStream fos = new FileOutputStream(destCfg, false);
 			connectProperties.store(fos, "");
 			fos.close();
@@ -219,6 +220,7 @@ public class SapController {
 		try {
 			if(ReplaceDestinationFile) {
 				destCfg = new File(DestinationFolder+"/"+ConnectionName+".jcoDestination");
+				System.out.println(destCfg.getAbsolutePath());
 				FileOutputStream fos = new FileOutputStream(destCfg, false);
 				connectProperties.store(fos, "");
 				fos.close();
