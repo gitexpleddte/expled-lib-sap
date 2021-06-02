@@ -36,6 +36,9 @@ public class SapController {
 	private String JCO_LANG;
 	public String CONNECION_ID="SCO";
 	public JCoDestination destination;
+	
+	private Boolean commit_context; 
+	
 	public SapController() {}
 	public SapController setJCO_ASHOST(String s) {JCO_ASHOST=s;return this;}
 	public SapController setJCO_SYSNR(String s) {JCO_SYSNR=s;return this;}
@@ -300,6 +303,7 @@ public class SapController {
 			}
 			if(json.has("COMMIT")&&json.getBoolean("COMMIT")) {
 				JCoContext.begin(destination);
+				commit_context=true;
 			}
 			JCoRepository repo = destination.getRepository();
 			JCoFunction function = repo.getFunction(json.getString("RFC"));
@@ -508,7 +512,18 @@ public class SapController {
 			ex.printStackTrace();
 			r.put("error",1);
 			r.put("message",ex.getMessage());
-			r.put("e", "Exception");
+			r.put("e", "Exception call RFC");
+			if(commit_context) {
+				try {
+					JCoContext.end(destination);
+				} catch (JCoException e) {
+					e.printStackTrace();
+					r.put("error",1);
+					r.put("message",e.getMessage());
+					r.put("e", "Exception cierre de contexto");
+				}
+			}
+			
 		}
 		return r;
 	}
