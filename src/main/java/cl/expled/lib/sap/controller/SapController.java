@@ -306,6 +306,7 @@ public class SapController {
 				commit_context=true;
 			}
 			JCoRepository repo = destination.getRepository();
+			repo.clear();
 			JCoFunction function = repo.getFunction(json.getString("RFC"));
 			//System.out.println(destination);
 			//System.out.println(function.toXML().toString());
