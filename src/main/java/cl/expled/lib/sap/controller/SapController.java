@@ -307,6 +307,7 @@ public class SapController {
 			}
 			JCoRepository repo = destination.getRepository();
 			repo.clear();
+			repo.removeFunctionTemplateFromCache(json.getString("RFC"));
 			JCoFunction function = repo.getFunction(json.getString("RFC"));
 			//System.out.println(destination);
 			//System.out.println(function.toXML().toString());
