@@ -1,0 +1,10 @@
+#
+#Mon Sep 20 21:02:27 CLST 2021
+jco.client.lang=ES
+jco.client.client=400
+jco.client.passwd=Sanjose@2021...
+jco.destination.expiration_time=60000
+jco.client.user=E_GOPLICITY
+jco.client.sysnr=00
+jco.destination.pool_capacity=0
+jco.client.ashost=/H/119.8.154.172/H/10.60.1.22

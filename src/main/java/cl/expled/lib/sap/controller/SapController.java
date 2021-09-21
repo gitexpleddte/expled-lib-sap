@@ -308,9 +308,22 @@ public class SapController {
 			JCoRepository repo = destination.getRepository();
 			repo.clear();
 			repo.removeFunctionTemplateFromCache(json.getString("RFC"));
+			for(String s:repo.getCachedFunctionTemplateNames()) {
+				System.out.println(s);
+			}
 			JCoFunction function = repo.getFunction(json.getString("RFC"));
 			//System.out.println(destination);
 			//System.out.println(function.toXML().toString());
+			
+			repo.clear();
+			repo.removeFunctionTemplateFromCache(json.getString("RFC"));
+			for(String s:repo.getCachedFunctionTemplateNames()) {
+				repo.removeFunctionTemplateFromCache(s);
+			}
+			for(String s:repo.getCachedClassMetaDataNames()) {
+				repo.removeClassMetaDataFromCache(s);
+			}
+			
 			if(json.has("getBase") && json.getBoolean("getBase")) {
 				data = XML.toJSONObject(function.toXML().toString());
 				
@@ -507,6 +520,16 @@ public class SapController {
 			System.out.println("reponse");
 			data = XML.toJSONObject((function.toXML().toString()));
 			//System.out.println(XML.toJSONObject(XML.escape(function.toXML().toString())));
+			
+			repo.clear();
+			repo.removeFunctionTemplateFromCache(json.getString("RFC"));
+			for(String s:repo.getCachedFunctionTemplateNames()) {
+				repo.removeFunctionTemplateFromCache(s);
+			}
+			for(String s:repo.getCachedClassMetaDataNames()) {
+				repo.removeClassMetaDataFromCache(s);
+			}
+			
 			r.put("data",data);
 			r.put("error",0);
 			r.put("message","OK");
